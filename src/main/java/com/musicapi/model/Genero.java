@@ -2,7 +2,6 @@ package com.musicapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -10,31 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "albumes")
+@Table(name = "generos")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString(exclude = "canciones")
-public class Album {
+public class Genero {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El título no puede estar vacío")
-    private String titulo;
+    @NotBlank(message = "El nombre no puede estar vacío")
+    private String nombre;
 
-    @Min(value = 1900, message = "El año debe ser posterior a 1900")
-    private Integer anio;
+    private String descripcion;
 
-    @ManyToOne
-    @JoinColumn(name = "artista_id")
-    private Artista artista;
-
-    // Añadido en rama feature/adrian — relacion inversa OneToMany con Cancion
-    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "generos")
     @JsonIgnore
     @Builder.Default
     private List<Cancion> canciones = new ArrayList<>();
